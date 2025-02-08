@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyes Follow Cursor</title>
+    <style>
+        body {
+            background-color: rgb(19, 18, 18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .eye-container {
+            display: flex;
+            gap: 40px;
+        }
+        .eye {
+            width: 80px;
+            height: 80px;
+            background-color: rgb(159, 156, 156);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .pupil {
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="eye-container">
+        <div class="eye"><div class="pupil"></div></div>
+        <div class="eye"><div class="pupil"></div></div>
+    </div>
+    <script>
+        const eyes = document.querySelectorAll('.eye');
+        const pupils = document.querySelectorAll('.pupil');
+
+        document.addEventListener('mousemove', (event) => {
+            const { clientX: mouseX, clientY: mouseY } = event;
+            eyes.forEach((eye, index) => {
+                const eyeRect = eye.getBoundingClientRect();
+                const eyeX = eyeRect.left + eyeRect.width / 2;
+                const eyeY = eyeRect.top + eyeRect.height / 2;
+                const deltaX = mouseX - eyeX;
+                const deltaY = mouseY - eyeY;
+                const angle = Math.atan2(deltaY, deltaX);
+                const pupilMovement = 20;
+                const pupilX = Math.cos(angle) * pupilMovement;
+                const pupilY = Math.sin(angle) * pupilMovement;
+                pupils[index].style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
